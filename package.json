@@ -1,0 +1,17 @@
+{
+  "name": "radical",
+  "version": "1.0.0",
+  "description": "A boilerplate-free, composable API framework for React/Redux",
+  "main": "radical.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "API",
+    "framework",
+    "react",
+    "redux"
+  ],
+  "author": "Nathan Rice",
+  "license": "MIT"
+}
