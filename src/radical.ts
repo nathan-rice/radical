@@ -319,9 +319,6 @@ module Radical {
 
     }
 
-    /**
-     *
-     */
     export class Action extends ApiComponent implements IAction, Function {
 
         /**

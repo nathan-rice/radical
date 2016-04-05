@@ -18,7 +18,7 @@ var Radical;
             }
         }
         return EndpointInput;
-    })();
+    }());
     Radical.EndpointInput = EndpointInput;
     var JsonBodyInput = (function () {
         function JsonBodyInput() {
@@ -26,7 +26,7 @@ var Radical;
             this.converter = JSON.stringify;
         }
         return JsonBodyInput;
-    })();
+    }());
     Radical.JsonBodyInput = JsonBodyInput;
     var RequestArgument = (function () {
         function RequestArgument(argument, value) {
@@ -34,7 +34,7 @@ var Radical;
             this.value = value;
         }
         return RequestArgument;
-    })();
+    }());
     Radical.RequestArgument = RequestArgument;
     var Endpoint = (function () {
         function Endpoint(config) {
@@ -123,7 +123,7 @@ var Radical;
             return new this().configure(config);
         };
         return Endpoint;
-    })();
+    }());
     Radical.Endpoint = Endpoint;
     var JsonEndpoint = (function (_super) {
         __extends(JsonEndpoint, _super);
@@ -134,7 +134,7 @@ var Radical;
             this.errorParser = JSON.parse;
         }
         return JsonEndpoint;
-    })(Endpoint);
+    }(Endpoint));
     Radical.JsonEndpoint = JsonEndpoint;
     var ApiComponent = (function () {
         function ApiComponent() {
@@ -174,7 +174,7 @@ var Radical;
             return new this().configure(config);
         };
         return ApiComponent;
-    })();
+    }());
     Radical.ApiComponent = ApiComponent;
     var Action = (function (_super) {
         __extends(Action, _super);
@@ -272,7 +272,7 @@ var Radical;
             return new this().configure(config);
         };
         return Action;
-    })(ApiComponent);
+    }(ApiComponent));
     Radical.Action = Action;
     var Namespace = (function (_super) {
         __extends(Namespace, _super);
@@ -286,7 +286,7 @@ var Radical;
                 if (!state)
                     return _this.defaultState;
                 else {
-                    var newState = {}, location_1, stateLocation;
+                    var newState = {}, location_1, stateLocation = void 0;
                     for (var key in state) {
                         newState[key] = state[key];
                     }
@@ -381,7 +381,7 @@ var Radical;
             return this._stateLocation[mountLocation];
         };
         return Namespace;
-    })(ApiComponent);
+    }(ApiComponent));
     Radical.Namespace = Namespace;
     var CollectionAction = (function (_super) {
         __extends(CollectionAction, _super);
@@ -403,7 +403,7 @@ var Radical;
                 return state;
         };
         return CollectionAction;
-    })(Action);
+    }(Action));
     Radical.CollectionAction = CollectionAction;
     var CollectionNamespace = (function (_super) {
         __extends(CollectionNamespace, _super);
@@ -414,7 +414,7 @@ var Radical;
                 if (!state)
                     return _this.defaultState;
                 else {
-                    var location_3, stateLocation, reducer;
+                    var location_3, stateLocation = void 0, reducer = void 0;
                     for (location_3 in _this.components) {
                         stateLocation = _this._stateLocation[location_3];
                         reducer = _this.components[location_3].reduce;
@@ -445,7 +445,7 @@ var Radical;
             return this;
         };
         return CollectionNamespace;
-    })(Namespace);
+    }(Namespace));
     Radical.CollectionNamespace = CollectionNamespace;
 })(Radical || (Radical = {}));
 //# sourceMappingURL=radical.js.map
