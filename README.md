@@ -33,7 +33,7 @@ Installation
 ============
 
 Just `npm install Radical` and you're up and running.  You can consume it as an internal module via Typescript; the
-pre-built radical.js can be used via webpack/script tag, and if you want to consume it via AMD you can rebuild via
+pre-built Radical.js can be used via webpack/script tag, and if you want to consume it via AMD you can rebuild via
 `npm run-script build-amd`.
 
 Documentation can be generated using Typedoc, just do `npm run-script document` and it will be built in the docs
@@ -60,8 +60,8 @@ Javascript semantics:
     /* You can just create an instance of the Namespace class.  If you do this, you
      * should provide a value for the name attribute, as this is used when
      * constructing Redux action types.  Note that since this is going to be a "root"
-     * Namespace, you must also specify a state retrieval function, and the store to
-     * dispatch actions to.  This is not necessary for child Namespaces, by default
+     * Namespace, you must also specify a state retrieval function, and the action
+     * dispatch function.  This is not necessary for child Namespaces, by default
      * they recursively search ancestor Namespaces for the appropriate values.  You
      * can also pass a defaultState object, which can house Namespace specific
      * configuration.
@@ -71,7 +71,7 @@ Javascript semantics:
      * auto-completion this way; I'll show you a better way in a bit.
      */
 
-    var apiRoot = radical.Namespace.create({
+    var apiRoot = Radical.Namespace.create({
         name: "My root namespace",
         getState: store.getState,
         dispatch: store.dispatch,
@@ -100,44 +100,54 @@ Now lets provide some actions on our Namespace:
      * argument; the first argument of Action initiators is bound to the Action
      * itself.
      */
-    var greetTarget = radical.Action.create(function (action) {
+    var greetTarget = Radical.Action.create(function (action) {
+        /* Generally, you are going to want to use the getState method of this.
+         * The reason is that this is bound to the parent Namespace of the Action.
+         */
         let state = this.getState();
         return state.greeting + " " + state.target + "!";
     });
 
     /* If your Action needs to modify state, you usually need to specify a reducer;
-     * however, if all you want to do is update a value in state, you the default
-     * reducer handles that case for you without any additional code.  I'm using an
-     * object argument to create here just to expose you to more of the interface.
+     * however, if all you want to do is set a value in state, you the default
+     * reducer handles that case for you.  The default Action reducer copies all
+     * properties of the dispatched Redux action (besides type) to the state object.
+     *
+     * Note: I'm using an object argument to the create method here just to expose
+     * you to more of the interface.
      */
-    var setGreeting = radical.Action.create({
+    var setGreeting = Radical.Action.create({
         initiator: function (action, newGreeting) {
             /* Note that I am dispatching without an action type.  The dispatch
              * method automatically adds a type property to the passed object
-             * with the Action's name property as a value.  Actions that do not
-             * have an explicitly set name property have one automatically
-             * generated via a combination of the containing Namespace's name
-             * and the mount location for the action.
+             * (if one is not already present) with the Action's name property
+             * as a value.  Actions that do not have an explicitly set name
+             * property have one automatically generated via a combination of
+             * the containing Namespace's name and the mount location for the
+             * action.
              *
-             * Note: An Action's dispatch returns a reference to its parent
-             * Namespace, to enable fluent-style method chaining.
+             * Note: An Action's dispatch method returns a reference to its
+             * parent Namespace, to enable fluent-style method chaining.
              */
             return action.dispatch({greeting: newGreeting});
         }
     })
 
     // For this action I'll specify the reducer manually.
-    var setTarget = radical.Action.create({
+    var setTarget = Radical.Action.create({
         initiator: function (action, newTarget) {
             return action.dispatch({target: newTarget});
         },
-        /* Note that you can directly mutate the passed state, since radical
+        /* Note that you can directly mutate the passed state, since Radical
          * passes each reducer a shallow copy of the parent Namespace's state. Thus
          * as long as you don't directly alter any mutable children of the passed
          * state, any references to old versions of state remain pristine.
+         *
+         * Note: you can also specify an array of reducer functions, and they will
+         * be applied sequentially.
          */
         reducer: (state, action) => {
-            state[target] = newTarget;
+            state[target] = action.target;
             return state;
         }
     }
@@ -173,27 +183,27 @@ going about this, depending on whether you value brevity and uncluttered code or
      * autocomplete for names, but you won't have type safety on the arguments and
      * return value of actions.  Since this Namespace is going to be a child of our
      * previously created apiRoot Namespace, we don't have to specify getState or
-     * store properties.
+     * dispatch properties.
      *
      * Note: You don't need to specify a name for Namespaces defined this way unless
      * you plan to have more than one instance of it.  If no name attribute is
      * specified, Namespaces will derive a name from their class name.
      */
-    class SpanishGreeter extends radical.Namespace {
+    class SpanishGreeter extends Radical.Namespace {
 
         defaultState = {greeting: "hola", target: "mundo"};
 
-        greetTarget = radical.Action.create(function (action) {
+        greetTarget = Radical.Action.create(function (action) {
             let state = this.getState();
             return "¡" + state.greeting + " " + state.target + "!";
         });
 
-        setTarget = radical.Action.create(function (action, newTarget) {
-            action.dispatch({target: newTarget});
+        setTarget = Radical.Action.create(function (action, newTarget) {
+            return action.dispatch({target: newTarget});
         });
 
-        setGreeting = radical.Action.create(function (action, newGreeting) {
-            action.dispatch({greeting: newGreeting});
+        setGreeting = Radical.Action.create(function (action, newGreeting) {
+            return action.dispatch({greeting: newGreeting});
         });
     }
 
@@ -202,21 +212,21 @@ going about this, depending on whether you value brevity and uncluttered code or
      * you supplied to the Namespace matches matches the signature definition on the
      * class.
      */
-    class FrenchGreeter extends radical.Namespace {
+    class FrenchGreeter extends Radical.Namespace {
 
         defaultState = {greeting: "bonjour", target: "le monde"};
 
         components = {
-            greetTarget: radical.Action.create(function (action) {
+            greetTarget: Radical.Action.create(function (action) {
                 let state = this.getState();
                 return state.greeting + " " + state.target + "!";
             }),
 
-            setTarget: radical.Action.create(function (action, newTarget) {
-                action.dispatch({target: newTarget});
+            setTarget: Radical.Action.create(function (action, newTarget) {
+                return action.dispatch({target: newTarget});
             }),
 
-            setGreeting: radical.Action.create(function (action, newGreeting) {
+            setGreeting: Radical.Action.create(function (action, newGreeting) {
                 return action.dispatch({greeting: newGreeting});
             })
         }
@@ -227,8 +237,8 @@ going about this, depending on whether you value brevity and uncluttered code or
     }
 
     /* You can attach Namespaces to other Namespaces in exactly the same way I attached
-     * Actions previously.  Note that if you use the configure method, this updates
-     * rather than replaces the components on the Namespace.
+     * Actions previously.  Note that the configure method performs an update rather
+     * than completely replacing the components on the Namespace.
      *
      * Note: You still won't get full editor autocomplete and type-safety if you attach
      * new Namespaces to a pre-existing Namespace in this way - you need to use class
@@ -243,7 +253,7 @@ going about this, depending on whether you value brevity and uncluttered code or
       * Note: I specify names here for the greeters because otherwise their actions
       * would have the same dispatch type as the previously created instances.
       */
-     class GreeterContainer extends radical.Namespace {
+     class GreeterContainer extends Radical.Namespace {
         spanish = SpanishGreeter.create({name: "alt spanish"}) as SpanishGreeter;
         french = FrenchGreeter.create({name: "alt french"}) as FrenchGreeter;
      }
@@ -279,14 +289,14 @@ collection interface) seamlessly.
     /* CollectionNamespace supports Immutable (or any collection with get, set and
      * merge methods).
      */
-    class AnotherDemoNamespace extends radical.CollectionNamespace {
+    class AnotherDemoNamespace extends Radical.CollectionNamespace {
         /* Note that you MUST set a defaultState for CollectionNamespaces.  This is
          * because I don't assume anything about the type of collection you are
          * using.
          */
         defaultState = Immutable.fromJS({});
 
-        actionWithGetEndpoint = radical.CollectionAction({
+        actionWithGetEndpoint = Radical.CollectionAction({
             /* If your endpoint is accessed using the GET method, and returns text
              * which doesn't need to be transformed (or you want to handle the
              * transformation yourself) you can specify it using just the URL.
@@ -302,8 +312,8 @@ collection interface) seamlessly.
             }
         });
 
-        actionWithJsonPostEndpoint = radical.CollectionAction({
-            endpoint: radical.JsonEndpoint.create({
+        actionWithJsonPostEndpoint = Radical.CollectionAction({
+            endpoint: Radical.JsonEndpoint.create({
                 url: "/post_json_endpoint",
                 method: "POST"
             }),
