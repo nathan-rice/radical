@@ -1,5 +1,3 @@
-/// <reference path="definitions/redux/redux.d.ts" />
-
 module Radical {
 
     export interface IReduxAction {
@@ -251,7 +249,7 @@ module Radical {
         name?: string;
         parent?: Namespace;
         defaultState?: Object;
-        store?: Redux.Store;
+        dispatch?: Function;
         getState?: Function;
     }
 
@@ -279,9 +277,9 @@ module Radical {
         defaultState: Object;
 
         /**
-         * The store to dispatch actions to.  Optional for child nodes, required for root nodes.
+         * The dispatch function.  Optional for child nodes, required for root nodes.
          */
-        store: Redux.Store;
+        dispatch: Function = (action: IReduxAction) => this.parent.dispatch(action);
 
         /**
          * For root nodes, the reduce function which should be passed to the Redux store.
@@ -295,10 +293,10 @@ module Radical {
          */
         getState: Function = () => {
             if (!this.parent) return null;
-            else return this._get(this.parent.getState(), this.parent.stateLocation(this));
+            else return this.getSubState(this.parent.getState(), this.parent.stateLocation(this));
         };
 
-        protected _get(state, location) {
+        protected getSubState(state, location) {
             if (location) return state[location];
             else return state;
         }
@@ -307,7 +305,7 @@ module Radical {
             if (config) {
                 if (config.parent) this.parent = config.parent;
                 if (config.getState) this.getState = config.getState;
-                if (config.store) this.store = config.store;
+                if (config.dispatch) this.dispatch = config.dispatch;
                 if (config.defaultState) this.defaultState = config.defaultState;
                 if (config.name) this.name = config.name;
             }
@@ -317,16 +315,6 @@ module Radical {
 
         static create(config?: IApiComponent) {
             return new this().configure(config);
-        }
-
-        /**
-         * Starting at the current node, traverses up the component tree searching for an `ApiComponent` with a defined
-         * store.
-         *
-         * @returns {Redux.Store} The first store located during traversal of the component tree.
-         */
-        getStore(): Redux.Store {
-            return this.store || this.parent.getStore();
         }
 
     }
@@ -357,7 +345,7 @@ module Radical {
             }
             // Set the type property of the reduxAction after copying data properties in case type is a data property
             reduxAction["type"] = action.name;
-            action.getStore().dispatch(reduxAction);
+            action.dispatch(reduxAction);
             return this;
         };
 
@@ -407,6 +395,16 @@ module Radical {
          * Required in order to masquerade as a function for the purpose of type checking
          */
         caller: Function;
+
+        dispatch = (action?: Object) => {
+            if (action) {
+                if (!action.hasOwnProperty("type")) action["type"] = this.name;
+            } else {
+                action = {type: this.name};
+            }
+            this.parent.dispatch(action);
+            return this.parent;
+        };
 
         configure(config?: IAction | Function) {
             if (config) {
@@ -463,7 +461,6 @@ module Radical {
 
     export interface INamespace extends IApiComponent {
         components?: IComponentMountConfiguration[] | IComponentContainer | Object;
-        store?: Redux.Store;
     }
 
     export interface IComponentMountConfiguration {
@@ -639,7 +636,7 @@ module Radical {
             return state;
         };
 
-        protected _get(state, location) {
+        protected getSubState(state, location) {
             if (location) return state.get(location);
             else return state;
         }
@@ -654,7 +651,7 @@ module Radical {
          */
         defaultState: ICollection<any, any>;
 
-        protected _get(state, location) {
+        protected getSubState(state, location) {
             if (location) return state.get(location);
             else return state;
         }

@@ -59,8 +59,8 @@ Javascript semantics:
 
     var apiRoot = radical.Namespace.create({
         name: "My root namespace",
-        getState: () => store.getState(),
-        store: store,
+        getState: store.getState,
+        dispatch: store.dispatch,
         // Note, if you do not specify defaultState, an empty object is assumed
         defaultState: {greeting: "hello", target: "world"}
     });
@@ -98,22 +98,24 @@ Now lets provide some actions on our Namespace:
      */
     var setGreeting = radical.Action.create({
         initiator: function (action, newGreeting) {
-            /* Note that I am dispatching with action.name, a property that I never
-             * explicitly set.  If no name is specified for an Action, a name is
-             * automatically assigned to it when it is mounted on a Namespace,
-             * using a combination of the Namespace's name and the mount location
-             * of the Action.
+            /* Note that I am dispatching without an action type.  The dispatch
+             * method automatically adds a type property to the passed object
+             * with the Action's name property as a value.  Actions that do not
+             * have an explicitly set name property have one automatically
+             * generated via a combination of the containing Namespace's name
+             * and the mount location for the action.
+             *
+             * Note: An Action's dispatch returns a reference to its parent
+             * Namespace, to enable fluent-style method chaining.
              */
-            this.getStore().dispatch({type: action.name, greeting: newGreeting});
-            return this;
+            return action.dispatch({greeting: newGreeting});
         }
     })
 
     // For this action I'll specify the reducer manually.
     var setTarget = radical.Action.create({
         initiator: function (action, newTarget) {
-            this.getStore().dispatch({type: action.name, target: newTarget});
-            return this;
+            return action.dispatch({target: newTarget});
         },
         /* Note that you can directly mutate the passed state, since radical
          * passes each reducer a shallow copy of the parent Namespace's state. Thus
@@ -173,13 +175,11 @@ going about this, depending on whether you value brevity and uncluttered code or
         });
 
         setTarget = radical.Action.create(function (action, newTarget) {
-            this.getStore().dispatch({type: action.name, target: newTarget});
-            return this;
+            action.dispatch({target: newTarget});
         });
 
         setGreeting = radical.Action.create(function (action, newGreeting) {
-            this.getStore().dispatch({type: action.name, greeting: newGreeting});
-            return this;
+            action.dispatch({greeting: newGreeting});
         });
     }
 
@@ -199,13 +199,11 @@ going about this, depending on whether you value brevity and uncluttered code or
             }),
 
             setTarget: radical.Action.create(function (action, newTarget) {
-                this.getStore().dispatch({type: action.name, target: newTarget});
-                return this;
+                action.dispatch({target: newTarget});
             }),
 
             setGreeting: radical.Action.create(function (action, newGreeting) {
-                this.getStore().dispatch({type: action.name, greeting: newGreeting});
-                return this;
+                return action.dispatch({greeting: newGreeting});
             })
         }
 
@@ -237,8 +235,8 @@ going about this, depending on whether you value brevity and uncluttered code or
      }
 
      var newApiRoot = GreeterContainer.create({
-        getState: () => store.getState(),
-        store: store
+        getState: store.getState,
+        dispatch: store.dispatch
      });
 
      store.replaceReducer(newApiRoot.reduce);
@@ -284,7 +282,7 @@ collection interface) seamlessly.
                 action.endpoint.execute({
                     arguments: {foo: arg1, bar: 2},
                     success: (data) => {
-                        this.getStore().dispatch({type: action.name, newData: data});
+                        action.dispatch({newData: data});
                     }
                 });
             }
@@ -300,7 +298,7 @@ collection interface) seamlessly.
                     data: {foo: arg1, bar: 2},
                     // The data passed to the success function has already been parsed
                     success: (data) => {
-                        this.getStore().dispatch({type: action.name, newData: data});
+                        action.dispatch({newData: data});
                     },
                     /* Note that JsonEndpoint assumes the server is delivering JSON
                      * error messages.  If this is not the case (it really should be!)

@@ -1,3 +1,5 @@
+var webpack = require("webpack");
+
 // Karma configuration
 // Generated on Mon Apr 04 2016 18:24:16 GMT-0400 (EDT)
 
@@ -16,7 +18,7 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             'dist/radical.js',
-            'test/init.js'
+            'test/test.js'
         ],
 
 
@@ -27,9 +29,10 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'test/init.js': ['webpack']
+            'test/test.js': ['webpack']
         },
 
+        plugins: ["karma-webpack", "karma-jasmine", "karma-chrome-launcher"],
 
         // test results reporter to use
         // possible values: 'dots', 'progress'

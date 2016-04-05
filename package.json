@@ -4,7 +4,7 @@
   "description": "A boilerplate-free, composable API framework for React/Redux",
   "main": "dist/radical.js",
   "scripts": {
-    "test": "karma run karma.conf.js",
+    "test": "karma start karma.conf.js",
     "document": "node_modules/.bin/typedoc --name Radical --readme ./README.md --target ES5 src/ --out docs",
     "build": "node_modules/.bin/tsc",
     "build-system": "node_modules/.bin/tsc --module system",
@@ -24,6 +24,7 @@
   "author": "Nathan Rice",
   "license": "MIT",
   "devDependencies": {
+    "immutable": "^3.7.6",
     "jasmine": "^2.4.1",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.22",
