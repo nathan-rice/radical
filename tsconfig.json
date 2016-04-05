@@ -1,11 +1,11 @@
 {
-	"compilerOptions": {
-		"declaration": true,
-		"module": "CommonJS",
-		"target": "es5",
-		"outDir": "dist"
-	},
-	"files": [
-		"src/radical.ts"
-	]
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "dist",
+    "sourceMap": true,
+    "removeComments": true
+  },
+  "files": [
+    "src/radical.ts"
+  ]
 }

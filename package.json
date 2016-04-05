@@ -1,10 +1,15 @@
 {
-  "name": "radical",
-  "version": "1.0.0",
+  "name": "Radical",
+  "version": "0.1.0",
   "description": "A boilerplate-free, composable API framework for React/Redux",
-  "main": "radical.js",
+  "main": "dist/radical.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma run karma.conf.js",
+    "document": "node_modules/.bin/typedoc --name Radical --readme ./README.md --target ES5 src/ --out docs",
+    "build": "node_modules/.bin/tsc",
+    "build-system": "node_modules/.bin/tsc --module system",
+    "build-commonjs": "node_modules/.bin/tsc --module commonjs",
+    "build-amd": "node_modules/.bin/tsc --module commonjs"
   },
   "keywords": [
     "API",
@@ -12,6 +17,23 @@
     "react",
     "redux"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nathan-rice/radical.git"
+  },
   "author": "Nathan Rice",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jasmine": "^2.4.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-commonjs": "0.0.13",
+    "karma-jasmine": "^0.3.8",
+    "karma-webpack": "^1.7.0",
+    "redux": "^3.3.1",
+    "typedoc": "^0.3.12",
+    "typescript": "^1.8.9",
+    "webpack": "^1.12.14"
+  }
 }
