@@ -29,6 +29,20 @@ compose Namespaces; all your reducers will just work.  Of course, if you don't w
 Namespace structure, you can override the default Namespace sub-state resolution behavior easily, and Actions associated
 with that Namespace will still support state locality.
 
+Installation
+============
+
+Just `npm install Radical` and you're up and running.  You can consume it as an internal module via Typescript; the
+pre-built radical.js can be used via webpack/script tag, and if you want to consume it via AMD you can rebuild via
+`npm run-script build-amd`.
+
+Documentation can be generated using Typedoc, just do `npm run-script document` and it will be built in the docs
+directory.  If something in the documentation is confusing or needs additional explanation feel free to create an issue
+and I will do my best to address it.
+
+There is a (meager) test suite, you can run it via `karma start karma.conf.js`.  If you run into any bugs I would
+greatly appreciate if you could include code for a demonstration test case when creating an issue.
+
 Quick Start
 ===========
 
