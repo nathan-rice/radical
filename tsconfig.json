@@ -3,7 +3,8 @@
     "target": "es5",
     "outDir": "dist",
     "sourceMap": true,
-    "removeComments": true
+    "removeComments": true,
+    "jsx": "react"
   },
   "files": [
     "src/radical.ts"
