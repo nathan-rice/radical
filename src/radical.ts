@@ -307,7 +307,6 @@ export class ApiComponent {
             if (config.defaultState) this.defaultState = config.defaultState;
             if (config.name) this.name = config.name;
         }
-        if (!this.name) this.name = (this.constructor as any).name;
         return this;
     }
 
@@ -469,8 +468,16 @@ export class Namespace extends ApiComponent implements INamespace {
     defaultState = {};
     protected _stateLocation = {};
 
+    protected nameSelf() {
+        if (this.constructor == Namespace) {
+            throw new Error("Automatic Namespace naming is only supported for derived classes; you must specify a value for the name attribute")
+        }
+        this.name = (this.constructor as any).name;
+    }
+
     configure(config?: INamespace) {
         super.configure(config);
+        if (!this.name) this.nameSelf();
         let key;
         for (key in this) {
             // This ensures consistent behavior for ApiComponents defined on a namespace as part of a class declaration
@@ -649,6 +656,13 @@ export class CollectionNamespace extends Namespace {
     protected getSubState(state, location) {
         if (location) return state.get(location);
         else return state;
+    }
+
+    protected nameSelf() {
+        if (this.constructor == CollectionNamespace) {
+            throw new Error("Automatic Namespace naming is only supported for derived classes; you must specify a value for the name attribute")
+        }
+        this.name = (this.constructor as any).name;
     }
 
     protected updateDefaultState(stateLocation, state: ICollection<any, any>): CollectionNamespace {

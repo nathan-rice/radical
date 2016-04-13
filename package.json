@@ -1,16 +1,16 @@
 {
   "name": "radical",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "A boilerplate-free, composable API framework for React/Redux",
   "main": "dist/radical.js",
   "typings": "dist/radical.d.ts",
   "scripts": {
     "test": "karma start karma.conf.js",
-    "document": "node_modules/.bin/typedoc --name Radical --readme ./README.md --target ES5 src/ --out docs",
+    "document": "node_modules/.bin/typedoc --name radical --readme ./README.md --module commonjs --target ES5 src/ --out docs",
     "build": "node_modules/.bin/tsc",
     "build-system": "node_modules/.bin/tsc --module system",
     "build-commonjs": "node_modules/.bin/tsc --module commonjs",
-    "build-amd": "node_modules/.bin/tsc --module commonjs"
+    "build-amd": "node_modules/.bin/tsc --module amd"
   },
   "keywords": [
     "API",

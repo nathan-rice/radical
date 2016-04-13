@@ -165,8 +165,6 @@ var ApiComponent = (function () {
             if (config.name)
                 this.name = config.name;
         }
-        if (!this.name)
-            this.name = this.constructor.name;
         return this;
     };
     ApiComponent.create = function (config) {
@@ -302,8 +300,16 @@ var Namespace = (function (_super) {
             }
         };
     }
+    Namespace.prototype.nameSelf = function () {
+        if (this.constructor == Namespace) {
+            throw new Error("Automatic Namespace naming is only supported for derived classes; you must specify a value for the name attribute");
+        }
+        this.name = this.constructor.name;
+    };
     Namespace.prototype.configure = function (config) {
         _super.prototype.configure.call(this, config);
+        if (!this.name)
+            this.nameSelf();
         var key;
         for (key in this) {
             if (this[key] instanceof ApiComponent && !this.mountLocation(this[key]))
@@ -433,6 +439,12 @@ var CollectionNamespace = (function (_super) {
             return state.get(location);
         else
             return state;
+    };
+    CollectionNamespace.prototype.nameSelf = function () {
+        if (this.constructor == CollectionNamespace) {
+            throw new Error("Automatic Namespace naming is only supported for derived classes; you must specify a value for the name attribute");
+        }
+        this.name = this.constructor.name;
     };
     CollectionNamespace.prototype.updateDefaultState = function (stateLocation, state) {
         if (stateLocation) {

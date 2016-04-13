@@ -1,10 +1,12 @@
 var Redux = require('redux');
 var Immutable = require('immutable');
+var Radical = require('../dist/radical.js');
 
 describe("Namespace", function () {
     var store = Redux.createStore(function (s) { return s });
     it("can mount components, get and set state properly", function () {
         var ns = Radical.Namespace.create({
+                name: "Greeter",
                 defaultState: {greeting: "hello", target: "world"},
                 dispatch: store.dispatch,
                 getState: store.getState
@@ -35,6 +37,7 @@ describe("CollectionNamespace", function () {
     var store = Redux.createStore(function (s) { return s });
     it("can mount components, get and set state properly", function () {
         var ns = Radical.CollectionNamespace.create({
+                name: "Collection Greeter",
                 defaultState: Immutable.fromJS({greeting: "hello", target: "world"}),
                 dispatch: store.dispatch,
                 getState: store.getState
