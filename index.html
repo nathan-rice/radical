@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Nathan Rice">
+
+    <title>Radical - Nathan Rice</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/static/css/clean-blog.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../static/pygments.css">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+          rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Nathan Rice</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="/projects">Projects</a>
+                </li>
+                <li>
+                    <a href="/science-technology">Science & Technology</a>
+                </li>
+                <li>
+                    <a href="/health-fitness">Health & Fitness</a>
+                </li>
+                <li>
+                    <a href="/personal-development">Personal Development</a>
+                </li>
+                <li>
+                    <a href="/about">About</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- Page Header -->
+<!-- Set your background image for this header on the line below. -->
+
+    <header class="intro-header" style="background-image: url('/static/img/science-technology.png')">
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="site-heading">
+                
+                    <img src="/static/img/radical-logo.png" alt="Radical">
+                
+                
+                    <hr class="small">
+                    <span class="subheading">Revolutionize how you create React/Redux applications</span>
+                
+            </div>
+        </div>
+    </div>
+</div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+  <div class="text-center"><a class="btn btn-primary" href="https://github.com/nathan-rice/radical">Radical @ github</a> <a class="btn btn-primary" href="docs.html">Full documentation</a></div><p>We can all agree the React/Redux combination is great for creating predictable, performant web applications.  Unfortunately, it comes with some downsides in terms of how applications are organized and constructed.</p>
+<p>For starters, there is a lot of boilerplate.  Between having separate dispatch and reduction functions and having to define actions and action creators, new features can be tedious to add.</p>
+<p>Additionally, Redux applications typically involve passing around coarse grained portions of application state.  This leads to reducers and state retrieval functions that have to traverse the state tree.  Writing these functions involves more work, and they make your code brittle.  Redux does provide you with the tools to do the right thing, but they’re not as intuitive or automatic as they could be.</p>
+<p>Finally, it is too common in Redux applications for actions, state retrieval functions and reducers to be defined in completely different places.  Defining these things in separately means having to jump around in the code to follow the logic.  Packaging them together makes the code easier to read and understand.  Additionally, by grouping them, it becomes easy to organize your code into reusable modules.</p>
+<h2>Enter Radical</h2>
+<p><em>Imagine</em> you didn’t have to write boilerplate in 95% of cases, and the other 5% of cases were easy to handle.  <em>Imagine</em> that giving reducers ultra-fine-grained state was easy and automatic. <em>Imagine</em> that packaging code into composable modular application features was the default. <strong>Radical provides all of this</strong>; it also has full Immutable support, and a clean, declarative AJAX interface.  Radical is written in Typescript, and committed to great documentation.</p>
+<h2>How does Radical work?</h2>
+<p>Radical applications are built around the concept of a cohesive internal API.  Radical provides two types of objects for you to build your API from: <em>Actions</em>, and <em>Namespaces</em>.</p>
+<h3>Actions</h3>
+<p><em>Actions</em> are like a little bundle comprising everything needed to change the application state.  They are typically comprised of an <em>initiator</em>, and a <em>reducer</em>.  <em>Initiators</em> should be used for application logic; <em>reducers</em> should only be responsible for changing state.</p>
+<p>Radical provides sensible default behavior for both <em>initiators</em> and <em>reducers</em>. The default <em>initiator</em> will apply the attributes of an object argument to the Redux action created*.  The default reducer applies attribute values from the Redux action to the local state*.  A reasonable name is generated for the Redux action type, or you can specify it manually. <sup>(* type exluded)</sup></p>
+<h3>Namespaces</h3>
+<p><em>Namespaces</em> are containers for <em>Actions</em>, as well as other <em>Namespaces</em>.  You can use <em>Namespaces</em> to model the logical organization of your application.  By default a state tree is automatically generated that matches the <em>Namespace</em> tree structure.  Additionally, <em>Actions</em> defined on a <em>Namespace</em> automatically receive the local portion of the state tree for reduction.</p>
+<p>Because <em>Namespaces</em> are designed around the idea of composition and decoupling, it is easy to re-organize or modularize a Radical application.  <em>Actions</em> will work regardless of where their parent Namespace resides.</p>
+<h2>I'm sold, how do I get started?</h2>
+<p>If you're using webpack, just <code>npm install radical</code> then <code>var Radical = require('radical')</code>.  If you're using typescript you could also copy <code>radical.ts</code> to any location you please and reference it in the files section of your project's <code>tsconfig.json</code>.</p>
+<h2>How about an example?</h2>
+<p>I <a href="https://github.com/nathan-rice/radical-examples">rewrote</a> some of the <a href="https://github.com/reactjs/redux/tree/master/examples">examples from the Redux github</a> in a Radical style.  I’m going to discuss one of them - <a href="https://github.com/nathan-rice/radical-examples/tree/master/shopping-cart">a web store</a> - here.  I encourage you to have a look at the the <a href="https://github.com/reactjs/redux/tree/master/examples/shopping-cart">Redux counterpoint</a> and and decide for yourself which one is clearer and more maintainable.</p>
+<h3>Web Store</h3>
+<p>This is just a simple web store.  It has an inventory of products for sale, and provides a shopping cart to hold purchases before checkout.</p>
+<p>The shopping cart and the inventory are both containers for products that share similar functionality, so we’re going to derive them both from a base class.  In addition, the shopping cart needs to be able to display the total dollar amount of the goods contained in it, and it is probably a good location for checkout functionality.</p>
+<p>Let’s take a look at how this could be be structured in Radical.  Note that while this example is written in Typescript with class semantics, Radical works just as well in plain Javascript without using classes; see the Radical <a href="http://www.github.com/nathan-rice/radical">README</a> for examples of that sort:</p>
+<h4>api.ts</h4>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="o">*</span> <span class="kr">as</span> <span class="nx">Radical</span> <span class="nx">from</span> <span class="s1">&#39;radical&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="o">*</span> <span class="kr">as</span> <span class="nx">Redux</span> <span class="nx">from</span> <span class="s1">&#39;redux&#39;</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">Product</span> <span class="p">{</span>
+
+   <span class="kr">private</span> <span class="kr">static</span> <span class="nx">nextId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="kr">static</span> <span class="nx">getId() {</span>
+       <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">nextId</span><span class="o">++</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="kr">constructor</span><span class="p">(</span><span class="kr">public</span> <span class="nx">title</span>: <span class="kt">string</span><span class="p">,</span> <span class="kr">public</span> <span class="nx">price</span>: <span class="kt">number</span><span class="p">,</span> <span class="kr">public</span> <span class="nx">id</span>: <span class="kt">number</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">if</span> <span class="p">(</span><span class="nx">id</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">Product</span><span class="p">.</span><span class="nx">getId</span><span class="p">();</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* This will represent the state object for both StoreContainer&#39;s defaultState, and for</span>
+<span class="cm">* any reducers attached to StoreContainer</span>
+<span class="cm">*/</span>
+<span class="kr">interface</span> <span class="nx">StoreContainerState</span> <span class="p">{</span>
+   <span class="nx">products</span><span class="o">:</span> <span class="p">{[</span><span class="nx">key</span>: <span class="kt">number</span><span class="p">]</span><span class="o">:</span> <span class="nx">Product</span><span class="p">};</span>
+   <span class="nx">quantities</span><span class="o">:</span> <span class="p">{[</span><span class="nx">key</span>: <span class="kt">number</span><span class="p">]</span><span class="o">:</span> <span class="kt">number</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="cm">/* Since our StoreContainers (the shopping cart and inventory) will group and provide state</span>
+<span class="cm">* for a set of related Actions, they will be Namespaces.</span>
+<span class="cm">*/</span>
+<span class="kr">class</span> <span class="nx">StoreContainer</span> <span class="kr">extends</span> <span class="nx">Radical</span><span class="p">.</span><span class="nx">Namespace</span> <span class="p">{</span>
+
+   <span class="c1">// An empty object is assumed as the default if none is specified</span>
+   <span class="nx">defaultState</span>: <span class="kt">StoreContainerState</span> <span class="o">=</span> <span class="p">{</span><span class="nx">products</span><span class="o">:</span><span class="p">{},</span> <span class="nx">quantities</span><span class="o">:</span> <span class="p">{}};</span>
+
+   <span class="c1">// A convenience method wrapper around setQuantity</span>
+   <span class="nx">add</span><span class="p">(</span><span class="nx">product</span>: <span class="kt">Product</span><span class="p">,</span> <span class="nx">quantity</span>: <span class="kt">number</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+       <span class="kd">let</span> <span class="nx">startingQuantity</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getQuantity</span><span class="p">(</span><span class="nx">product</span><span class="p">);</span>
+       <span class="c1">// here we&#39;re calling the initiator function of the setQuantity Action</span>
+       <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">setQuantity</span><span class="p">(</span><span class="nx">product</span><span class="p">,</span> <span class="nx">startingQuantity</span> <span class="o">+</span> <span class="nx">quantity</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="c1">// Another convenience method wrapper around setQuantity</span>
+   <span class="nx">remove</span><span class="p">(</span><span class="nx">product</span>: <span class="kt">Product</span><span class="p">,</span> <span class="nx">quantity</span>: <span class="kt">number</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+       <span class="kd">let</span> <span class="nx">startingQuantity</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getQuantity</span><span class="p">(</span><span class="nx">product</span><span class="p">);</span>
+       <span class="k">if</span> <span class="p">(</span><span class="nx">startingQuantity</span> <span class="o">&gt;=</span> <span class="nx">quantity</span><span class="p">)</span> <span class="p">{</span>
+           <span class="c1">// here we&#39;re calling the initiator function of the setQuantity Action</span>
+           <span class="k">this</span><span class="p">.</span><span class="nx">setQuantity</span><span class="p">(</span><span class="nx">product</span><span class="p">,</span> <span class="nx">startingQuantity</span> <span class="o">-</span> <span class="nx">quantity</span><span class="p">);</span>
+           <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+       <span class="p">}</span> <span class="k">else</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="c1">// get all the products in the container with a quantity of 1 or more</span>
+   <span class="nx">list() {</span>
+       <span class="c1">// the Namespace&#39;s getState method gets local state automatically</span>
+       <span class="kd">let</span> <span class="nx">state</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getState</span><span class="p">(),</span> <span class="nx">quantities</span> <span class="o">=</span> <span class="nx">state</span><span class="p">.</span><span class="nx">quantities</span><span class="p">,</span> <span class="nx">products</span> <span class="o">=</span> <span class="p">[];</span>
+       <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">quantities</span><span class="p">)</span> <span class="p">{</span>
+           <span class="k">if</span> <span class="p">(</span><span class="nx">quantities</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">quantities</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+               <span class="nx">products</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">state</span><span class="p">.</span><span class="nx">products</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+           <span class="p">}</span>
+       <span class="p">}</span>
+       <span class="k">return</span> <span class="nx">products</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="cm">/* Here we&#39;re creating an Action for the first time.  Note that the create method is</span>
+<span class="cm">    * preferable to using new in most cases.</span>
+<span class="cm">    */</span>
+   <span class="nx">setQuantity</span> <span class="o">=</span> <span class="nx">Radical</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+       <span class="cm">/* This initiator doesn&#39;t do much, it could almost be replaced by the default</span>
+<span class="cm">        * initiator.  Note that the first argument to the initiator is the action itself.</span>
+<span class="cm">        * That argument is automatically bound to the current action, while this is</span>
+<span class="cm">        * bound to the parent Namespace.</span>
+<span class="cm">        */</span>
+       <span class="nx">initiator</span>: <span class="kt">function</span><span class="p">(</span><span class="nx">action</span><span class="p">,</span> <span class="nx">product</span>: <span class="kt">Product</span><span class="p">,</span> <span class="nx">quantity</span>: <span class="kt">number</span><span class="p">)</span> <span class="p">{</span>
+           <span class="k">return</span> <span class="nx">action</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">({</span><span class="nx">product</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">});</span>
+       <span class="p">},</span>
+       <span class="cm">/* Notice this reducer only has to deal with a StoreContainerState object, and</span>
+<span class="cm">        * you can safely modify state directly, as it is a copy of the original.</span>
+<span class="cm">        */</span>
+       <span class="nx">reducer</span>: <span class="kt">function</span> <span class="p">(</span><span class="nx">state</span>: <span class="kt">StoreContainerState</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+           <span class="kd">let</span> <span class="p">{</span><span class="nx">product</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">}</span> <span class="o">=</span> <span class="nx">action</span><span class="p">;</span>
+           <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">state</span><span class="p">.</span><span class="nx">products</span><span class="p">[</span><span class="nx">product</span><span class="p">.</span><span class="nx">id</span><span class="p">])</span> <span class="p">{</span>
+               <span class="nx">state</span><span class="p">.</span><span class="nx">products</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({[</span><span class="nx">product</span><span class="p">.</span><span class="nx">id</span><span class="p">]</span><span class="o">:</span> <span class="nx">product</span><span class="p">},</span> <span class="nx">state</span><span class="p">.</span><span class="nx">products</span><span class="p">);</span>
+           <span class="p">}</span>
+           <span class="nx">state</span><span class="p">.</span><span class="nx">quantities</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">({},</span> <span class="nx">state</span><span class="p">.</span><span class="nx">quantities</span><span class="p">);</span>
+           <span class="nx">state</span><span class="p">.</span><span class="nx">quantities</span><span class="p">[</span><span class="nx">product</span><span class="p">.</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">quantity</span><span class="p">;</span>
+           <span class="k">return</span> <span class="nx">state</span><span class="p">;</span>
+       <span class="p">}</span>
+   <span class="p">});</span>
+
+   <span class="nx">getQuantity</span><span class="p">(</span><span class="nx">product</span>: <span class="kt">Product</span><span class="p">)</span><span class="o">:</span> <span class="kt">number</span> <span class="p">{</span>
+       <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">getState</span><span class="p">().</span><span class="nx">quantities</span><span class="p">[</span><span class="nx">product</span><span class="p">.</span><span class="nx">id</span><span class="p">]</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">class</span> <span class="nx">ShoppingCart</span> <span class="kr">extends</span> <span class="nx">StoreContainer</span> <span class="p">{</span>
+   <span class="c1">// Since we don&#39;t need to pass anything here, the default initiator will be fine</span>
+   <span class="nx">checkout</span> <span class="o">=</span> <span class="nx">Radical</span><span class="p">.</span><span class="nx">Action</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+       <span class="nx">reducer</span>: <span class="kt">function</span> <span class="p">(</span><span class="nx">state</span>: <span class="kt">StoreContainerState</span><span class="p">)</span> <span class="p">{</span>
+           <span class="nx">state</span><span class="p">.</span><span class="nx">products</span> <span class="o">=</span> <span class="p">{};</span>
+           <span class="nx">state</span><span class="p">.</span><span class="nx">quantities</span> <span class="o">=</span> <span class="p">{};</span>
+           <span class="k">return</span> <span class="nx">state</span><span class="p">;</span>
+       <span class="p">}</span>
+   <span class="p">});</span>
+
+   <span class="nx">getTotal() {</span>
+       <span class="kd">let</span> <span class="p">{</span><span class="nx">quantities</span><span class="p">,</span> <span class="nx">products</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getState</span><span class="p">(),</span> <span class="nx">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+       <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">quantities</span><span class="p">)</span> <span class="p">{</span>
+           <span class="k">if</span> <span class="p">(</span><span class="nx">quantities</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">key</span><span class="p">))</span> <span class="nx">total</span> <span class="o">+=</span> <span class="nx">quantities</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">*</span> <span class="nx">products</span><span class="p">[</span><span class="nx">key</span><span class="p">].</span><span class="nx">price</span>
+       <span class="p">}</span>
+       <span class="k">return</span> <span class="nx">total</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+   <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="cm">/* The inventory and shopping cart functionality has been defined, now there needs to</span>
+<span class="cm">* be something to tie everything together into a cohesive application.  Store will</span>
+<span class="cm">* serve to provide the top level interface.</span>
+<span class="cm">*/</span>
+<span class="kr">class</span> <span class="nx">Store</span> <span class="kr">extends</span> <span class="nx">Radical</span><span class="p">.</span><span class="nx">Namespace</span> <span class="p">{</span>
+   <span class="nx">inventory</span> <span class="o">=</span> <span class="nx">StoreContainer</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Inventory&quot;</span><span class="p">})</span> <span class="kr">as</span> <span class="nx">StoreContainer</span><span class="p">;</span>
+   <span class="nx">shoppingCart</span> <span class="o">=</span> <span class="nx">ShoppingCart</span><span class="p">.</span><span class="nx">create</span><span class="p">()</span> <span class="kr">as</span> <span class="nx">ShoppingCart</span><span class="p">;</span>
+
+   <span class="c1">// Move an item from inventory to the shopping cart</span>
+   <span class="nx">order</span><span class="p">(</span><span class="nx">product</span>: <span class="kt">Product</span><span class="p">,</span> <span class="nx">quantity</span>: <span class="kt">number</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">inventory</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">product</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">))</span> <span class="p">{</span>
+           <span class="k">this</span><span class="p">.</span><span class="nx">shoppingCart</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">product</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">);</span>
+           <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+       <span class="p">}</span> <span class="k">else</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="c1">// Move an item from the shopping cart to inventory</span>
+   <span class="nx">cancelOrder</span><span class="p">(</span><span class="nx">product</span>: <span class="kt">Product</span><span class="p">,</span> <span class="nx">quantity</span>: <span class="kt">number</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+       <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">shoppingCart</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">product</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">))</span> <span class="p">{</span>
+           <span class="k">this</span><span class="p">.</span><span class="nx">inventory</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">product</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">);</span>
+           <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+       <span class="p">}</span> <span class="k">else</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">w</span> <span class="o">=</span> <span class="p">(</span><span class="nb">window</span> <span class="kr">as</span> <span class="nx">any</span><span class="p">),</span>
+   <span class="nx">devToolExtension</span> <span class="o">=</span> <span class="nx">w</span><span class="p">.</span><span class="nx">devToolsExtension</span> <span class="o">?</span> <span class="nx">w</span><span class="p">.</span><span class="nx">devToolsExtension</span><span class="p">()</span> <span class="o">:</span> <span class="kc">undefined</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">Redux</span><span class="p">.</span><span class="nx">createStore</span><span class="p">(</span><span class="nx">state</span> <span class="o">=&gt;</span> <span class="nx">state</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">devToolExtension</span><span class="p">);</span>
+
+<span class="c1">// Once you have your Redux store, create a web Store and wire it in</span>
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">webStore</span> <span class="o">=</span> <span class="nx">Store</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="nx">store</span>: <span class="kt">store</span><span class="p">})</span> <span class="kr">as</span> <span class="nx">Store</span><span class="p">;</span>
+
+<span class="cm">/* You can just use the top level Store&#39;s reduce function, it will dispatch</span>
+<span class="cm">* relevant portions of the state tree to its children and their Actions.</span>
+<span class="cm">*</span>
+<span class="cm">* Don&#39;t do this until you have completely configured your top-level Namespace.</span>
+<span class="cm">*/</span>
+<span class="nx">store</span><span class="p">.</span><span class="nx">replaceReducer</span><span class="p">(</span><span class="nx">webStore</span><span class="p">.</span><span class="nx">reduce</span><span class="p">);</span>
+
+<span class="c1">// Now to give the people something to buy!</span>
+<span class="nx">webStore</span><span class="p">.</span><span class="nx">inventory</span>
+   <span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Product</span><span class="p">(</span><span class="s2">&quot;Tablet&quot;</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+   <span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Product</span><span class="p">(</span><span class="s2">&quot;Shirt&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+   <span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Product</span><span class="p">(</span><span class="s2">&quot;Album&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="mi">10</span><span class="p">);</span>
+</pre></div>
+<p>That is very straightforward, easy to follow code.  Now, to consume it from React:</p>
+<h4>components.tsx</h4>
+<div class="highlight"><pre><span></span><span class="kr">import</span> <span class="o">*</span> <span class="kr">as</span> <span class="nx">api</span> <span class="nx">from</span> <span class="s1">&#39;./api&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="o">*</span> <span class="kr">as</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span><span class="nx">connect</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">({})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="p">(</span>
+       <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+           <span class="o">&lt;</span><span class="nx">h2</span><span class="o">&gt;</span><span class="nx">Shopping</span> <span class="nx">Cart</span> <span class="nx">Example</span><span class="o">&lt;</span><span class="err">/h2&gt;</span>
+           <span class="o">&lt;</span><span class="nx">hr</span><span class="o">/&gt;</span>
+           <span class="o">&lt;</span><span class="nx">Products</span> <span class="nx">title</span><span class="o">=</span><span class="s2">&quot;Products&quot;</span><span class="o">/&gt;</span>
+           <span class="o">&lt;</span><span class="nx">hr</span><span class="o">/&gt;</span>
+           <span class="o">&lt;</span><span class="nx">Cart</span> <span class="o">/&gt;</span>
+       <span class="o">&lt;</span><span class="err">/div&gt;</span>
+   <span class="p">)</span>
+<span class="p">};</span>
+
+<span class="kr">interface</span> <span class="nx">IProductsProps</span> <span class="p">{</span>
+   <span class="nx">title</span>: <span class="kt">string</span><span class="p">;</span>
+   <span class="nx">products?</span>: <span class="kt">api.Product</span><span class="p">[];</span>
+<span class="p">}</span>
+
+<span class="cm">/* Note here that I&#39;m wiring the Products component directly to the API via React/Redux.</span>
+<span class="cm">* I find this both conceptually clearer and more convenient.</span>
+<span class="cm">*/</span>
+<span class="kd">function</span> <span class="nx">productsLink() {</span>
+   <span class="k">return</span> <span class="p">{</span><span class="nx">products</span>: <span class="kt">api.webStore.inventory.list</span><span class="p">()}</span>
+<span class="p">}</span>
+
+<span class="c1">// A small workaround for broken React/Redux typings.</span>
+<span class="kr">const</span> <span class="nx">productsLinkConnect</span> <span class="o">=</span> <span class="p">(</span><span class="nx">productsClass</span>: <span class="kt">any</span><span class="p">)</span><span class="o">:</span> <span class="nx">any</span> <span class="o">=&gt;</span> <span class="nx">connect</span><span class="p">(</span><span class="nx">productsLink</span><span class="p">)(</span><span class="nx">productsClass</span><span class="p">);</span>
+
+<span class="kd">@productsLinkConnect</span>
+<span class="kr">class</span> <span class="nx">Products</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span><span class="o">&lt;</span><span class="nx">IProductsProps</span><span class="p">,</span> <span class="nx">any</span><span class="o">&gt;</span> <span class="p">{</span>
+   <span class="nx">render() {</span>
+       <span class="k">return</span> <span class="p">(</span>
+           <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+               <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">title</span><span class="p">}</span><span class="o">&lt;</span><span class="err">/h3&gt;</span>
+               <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+                   <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">products</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">product</span> <span class="o">=&gt;</span>
+                   <span class="o">&lt;</span><span class="nx">ProductItem</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">product</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span> <span class="nx">product</span><span class="o">=</span><span class="p">{</span><span class="nx">product</span><span class="p">}</span><span class="o">/&gt;</span>
+                       <span class="p">)}</span>
+               <span class="o">&lt;</span><span class="err">/div&gt;</span>
+           <span class="o">&lt;</span><span class="err">/div&gt;</span>
+       <span class="p">)</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">interface</span> <span class="nx">ICartProps</span> <span class="p">{</span>
+   <span class="nx">products?</span>: <span class="kt">api.Product</span><span class="p">[];</span>
+<span class="p">}</span>
+
+<span class="c1">// Using the same React/Redux pattern</span>
+<span class="kd">function</span> <span class="nx">cartLink() {</span>
+   <span class="k">return</span> <span class="p">{</span><span class="nx">products</span>: <span class="kt">api.webStore.shoppingCart.list</span><span class="p">()}</span>
+<span class="p">}</span>
+
+<span class="c1">// That workaround again</span>
+<span class="kr">const</span> <span class="nx">cartLinkConnect</span> <span class="o">=</span> <span class="p">(</span><span class="nx">cartClass</span>: <span class="kt">any</span><span class="p">)</span><span class="o">:</span> <span class="nx">any</span> <span class="o">=&gt;</span> <span class="nx">connect</span><span class="p">(</span><span class="nx">cartLink</span><span class="p">)(</span><span class="nx">cartClass</span><span class="p">);</span>
+
+<span class="kd">@cartLinkConnect</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">Cart</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span><span class="o">&lt;</span><span class="nx">ICartProps</span><span class="p">,</span> <span class="nx">any</span><span class="o">&gt;</span> <span class="p">{</span>
+
+   <span class="nx">getProductNodes() {</span>
+       <span class="kr">const</span> <span class="nx">products</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">products</span><span class="p">;</span>
+       <span class="k">return</span> <span class="o">!</span><span class="nx">products</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span>
+           <span class="o">&lt;</span><span class="nx">em</span><span class="o">&gt;</span><span class="nx">Please</span> <span class="nx">add</span> <span class="nx">some</span> <span class="nx">products</span> <span class="nx">to</span> <span class="nx">cart</span><span class="p">.</span><span class="o">&lt;</span><span class="err">/em&gt; :</span>
+           <span class="nx">products</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">product</span> <span class="o">=&gt;</span> <span class="o">&lt;</span><span class="nx">CartItem</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">product</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span> <span class="nx">product</span><span class="o">=</span><span class="p">{</span><span class="nx">product</span><span class="p">}</span> <span class="o">/&gt;</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="cm">/* Here we utilize the api directly.  Another option is to pass around the shoppingCart</span>
+<span class="cm">    * Namespace as a prop; that shifts coupling from the component itself to its parents.</span>
+<span class="cm">    */</span>
+   <span class="nx">render() {</span>
+       <span class="k">return</span> <span class="p">(</span>
+           <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+               <span class="o">&lt;</span><span class="nx">h3</span><span class="o">&gt;</span><span class="nx">Your</span> <span class="nx">Cart</span><span class="o">&lt;</span><span class="err">/h3&gt;</span>
+               <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">getProductNodes</span><span class="p">()}</span><span class="o">&lt;</span><span class="err">/div&gt;</span>
+               <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Total</span>: <span class="kt">$</span><span class="p">{</span><span class="nx">api</span><span class="p">.</span><span class="nx">webStore</span><span class="p">.</span><span class="nx">shoppingCart</span><span class="p">.</span><span class="nx">getTotal</span><span class="p">()}</span><span class="o">&lt;</span><span class="err">/p&gt;</span>
+               <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">api</span><span class="p">.</span><span class="nx">webStore</span><span class="p">.</span><span class="nx">shoppingCart</span><span class="p">.</span><span class="nx">checkout</span><span class="p">}</span>
+                       <span class="nx">disabled</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">products</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span> <span class="s1">&#39;disabled&#39;</span><span class="p">}</span><span class="o">&gt;</span>
+                   <span class="nx">Checkout</span>
+               <span class="o">&lt;</span><span class="err">/button&gt;</span>
+           <span class="o">&lt;</span><span class="err">/div&gt;</span>
+       <span class="p">)</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">CartItem</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span><span class="o">&lt;</span><span class="nx">IProductItemProps</span><span class="p">,</span> <span class="nx">any</span><span class="o">&gt;</span> <span class="p">{</span>
+   <span class="nx">render() {</span>
+       <span class="kr">const</span> <span class="p">{</span><span class="nx">product</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
+
+       <span class="k">return</span> <span class="p">(</span>
+           <span class="o">&lt;</span><span class="nx">div</span>
+               <span class="nx">style</span><span class="o">=</span><span class="p">{{</span> <span class="nx">marginBottom</span>: <span class="kt">20</span> <span class="p">}}</span><span class="o">&gt;</span>
+               <span class="o">&lt;</span><span class="nx">Product</span>
+                   <span class="nx">title</span><span class="o">=</span><span class="p">{</span><span class="nx">product</span><span class="p">.</span><span class="nx">title</span><span class="p">}</span>
+                   <span class="nx">price</span><span class="o">=</span><span class="p">{</span><span class="nx">product</span><span class="p">.</span><span class="nx">price</span><span class="p">}</span>
+                   <span class="nx">quantity</span><span class="o">=</span><span class="p">{</span><span class="nx">api</span><span class="p">.</span><span class="nx">webStore</span><span class="p">.</span><span class="nx">shoppingCart</span><span class="p">.</span><span class="nx">getQuantity</span><span class="p">(</span><span class="nx">product</span><span class="p">)}</span>
+                   <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">product</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="o">/&gt;</span>
+               <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="nx">api</span><span class="p">.</span><span class="nx">webStore</span><span class="p">.</span><span class="nx">cancelOrder</span><span class="p">(</span><span class="nx">product</span><span class="p">)}</span><span class="o">&gt;</span><span class="nx">Remove</span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+           <span class="o">&lt;</span><span class="err">/div&gt;</span>
+       <span class="p">)</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">interface</span> <span class="nx">IProductProps</span> <span class="p">{</span>
+   <span class="nx">price</span>: <span class="kt">number</span><span class="p">;</span>
+   <span class="nx">quantity?</span>: <span class="kt">number</span><span class="p">;</span>
+   <span class="nx">title</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">Product</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span><span class="o">&lt;</span><span class="nx">IProductProps</span><span class="p">,</span> <span class="nx">any</span><span class="o">&gt;</span> <span class="p">{</span>
+   <span class="nx">render() {</span>
+       <span class="kr">const</span> <span class="p">{</span><span class="nx">price</span><span class="p">,</span> <span class="nx">quantity</span><span class="p">,</span> <span class="nx">title</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
+       <span class="k">return</span> <span class="o">&lt;</span><span class="nx">span</span><span class="o">&gt;</span> <span class="p">{</span><span class="nx">title</span><span class="p">}</span> <span class="o">-</span> <span class="nx">$</span><span class="p">{</span><span class="nx">price</span><span class="p">}</span> <span class="p">{</span><span class="nx">quantity</span> <span class="o">?</span> <span class="err">`</span><span class="nx">x</span> <span class="nx">$</span><span class="p">{</span><span class="nx">quantity</span><span class="p">}</span><span class="err">`</span> <span class="o">:</span> <span class="kc">null</span><span class="p">}</span> <span class="o">&lt;</span><span class="err">/span&gt;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">interface</span> <span class="nx">IProductItemProps</span> <span class="p">{</span>
+   <span class="nx">product</span>: <span class="kt">api.Product</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">ProductItem</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span><span class="o">&lt;</span><span class="nx">IProductItemProps</span><span class="p">,</span> <span class="nx">any</span><span class="o">&gt;</span> <span class="p">{</span>
+   <span class="nx">render() {</span>
+       <span class="kr">const</span> <span class="p">{</span><span class="nx">product</span><span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">;</span>
+
+       <span class="k">return</span> <span class="p">(</span>
+           <span class="o">&lt;</span><span class="nx">div</span>
+               <span class="nx">style</span><span class="o">=</span><span class="p">{{</span> <span class="nx">marginBottom</span>: <span class="kt">20</span> <span class="p">}}</span><span class="o">&gt;</span>
+               <span class="o">&lt;</span><span class="nx">Product</span>
+                   <span class="nx">title</span><span class="o">=</span><span class="p">{</span><span class="nx">product</span><span class="p">.</span><span class="nx">title</span><span class="p">}</span>
+                   <span class="nx">price</span><span class="o">=</span><span class="p">{</span><span class="nx">product</span><span class="p">.</span><span class="nx">price</span><span class="p">}</span><span class="o">/&gt;</span>
+               <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="nx">api</span><span class="p">.</span><span class="nx">webStore</span><span class="p">.</span><span class="nx">order</span><span class="p">(</span><span class="nx">product</span><span class="p">)}</span><span class="o">&gt;</span><span class="nx">Add</span> <span class="nx">to</span> <span class="nx">cart</span><span class="o">&lt;</span><span class="err">/button&gt;</span>
+           <span class="o">&lt;</span><span class="err">/div&gt;</span>
+       <span class="p">)</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>Pretty straightforward!</p>
+<div class="text-center"><a class="btn btn-primary" href="https://github.com/nathan-rice/radical">Radical @ github</a> <a class="btn btn-primary" href="docs.html">Full documentation</a></div>
+
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; Nathan Rice 2016</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/static/js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
