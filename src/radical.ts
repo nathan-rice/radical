@@ -1,7 +1,3 @@
-export interface IReduxAction {
-    type: string;
-}
-
 /**
  * This is the base for all inputs to a HTTP endpoint.  This includes both URL arguments, and body data for
  * POST/PUT requests.
@@ -59,7 +55,7 @@ export interface IEndpointArgumentContainer {
  * This class is used to represent HTTP request url arguments.
  */
 export class RequestArgument {
-    constructor(public argument: string, public value: string) {
+    constructor(public argument: string, public value: string | number) {
     }
 }
 
@@ -207,26 +203,30 @@ export class Endpoint implements IEndpoint {
             url = this.url,
             data = "",
             endpoint = this;
-        if (parameters) {
-            if (parameters.arguments) {
-                url = this.url + "?" + this.toQueryString(parameters.arguments);
-            }
-            request.onload = function () {
-                if (this.status >= 200 && this.status < 400) {
-                    if (parameters.success) parameters.success(endpoint.responseParser(this.response), this.status);
-                } else {
-                    if (parameters.error) parameters.error(endpoint.errorParser(this.response), this.status);
+        return new Promise((resolve, reject) => {
+            if (parameters) {
+                if (parameters.arguments) {
+                    url = this.url + "?" + this.toQueryString(parameters.arguments);
                 }
-            };
-            if (parameters.data) {
-                data = this.body.converter(parameters.data);
+                request.onload = function () {
+                    if (this.status >= 200 && this.status < 400) {
+                        if (parameters.success) parameters.success(endpoint.responseParser(this.response), this.status);
+                        resolve(this.response, this.status);
+                    } else {
+                        if (parameters.error) parameters.error(endpoint.errorParser(this.response), this.status);
+                        reject(this.response, this.status);
+                    }
+                };
+                if (parameters.data) {
+                    data = this.body.converter(parameters.data);
+                }
             }
-        }
-        request.open(this.method, url, true);
-        this.setHeaders(request, this.headers);
-        this.setHeaders(request, parameters.headers);
-        request.setRequestHeader("Content-Type", this.body.contentType);
-        request.send(data);
+            request.open(this.method, url, true);
+            this.setHeaders(request, this.headers);
+            this.setHeaders(request, parameters.headers);
+            request.setRequestHeader("Content-Type", this.body.contentType);
+            request.send(data);
+        });
     }
 
     static create(config?: IEndpoint) {
@@ -254,7 +254,7 @@ export interface IApiComponent {
 export interface IAction extends IApiComponent {
     endpoint?: Endpoint | string;
     initiator?: Function;
-    reducer?: ((state, action: IReduxAction) => Object) | ((state, action: IReduxAction) => Object)[];
+    reducer?: ((state, action) => Object) | ((state, action) => Object)[];
 }
 
 export class ApiComponent {
@@ -277,7 +277,7 @@ export class ApiComponent {
     /**
      * The dispatch function.  Optional for child nodes, required for root nodes.
      */
-    dispatch: Function = (action: IReduxAction) => this.parent.dispatch(action);
+    dispatch: Function = action => this.parent.dispatch(action);
 
     /**
      * For root nodes, the reduce function which should be passed to the Redux store.
@@ -351,8 +351,8 @@ export class Action extends ApiComponent implements IAction, Function {
      * @param action
      * @returns {any}
      */
-    reducer: ((state, action: IReduxAction) => Object) |
-        ((state, action: IReduxAction) => Object)[] = (state, action) => {
+    reducer: ((state, action) => Object) |
+        ((state, action) => Object)[] = (state, action) => {
         for (let key in action) {
             if (key != "type") {
                 state[key] = action[key];
@@ -441,9 +441,9 @@ export class Action extends ApiComponent implements IAction, Function {
             return state;
         } else {
             if (this.reducer instanceof Function) {
-                return (this.reducer as (state, action: IReduxAction) => Object)(state, action);
+                return (this.reducer as (state, action) => Object)(state, action);
             } else {
-                return (this.reducer as ((state, action: IReduxAction) => Object)[]).reduce((s, f) => f(s, action), state);
+                return (this.reducer as ((state, action) => Object)[]).reduce((s, f) => f(s, action), state);
             }
         }
     }
@@ -628,8 +628,8 @@ export class CollectionAction extends Action {
 
     defaultState: ICollection<any, any>;
 
-    reducer: (state: ICollection<any, any>, action: IReduxAction) => ICollection<any, any> |
-        ((state: ICollection<any, any>, action: IReduxAction) => ICollection<any, any>)[] = (state, action) => {
+    reducer: (state: ICollection<any, any>, action) => ICollection<any, any> |
+        ((state: ICollection<any, any>, action) => ICollection<any, any>)[] = (state, action) => {
         for (let key in action) {
             if (key != "type") {
                 state = state.set(key, action[key]);
