@@ -1,6 +1,6 @@
 {
   "name": "radical",
-  "version": "0.1.14",
+  "version": "0.1.16",
   "description": "A boilerplate-free, composable API framework for React/Redux",
   "main": "dist/radical.js",
   "typings": "dist/radical.d.ts",

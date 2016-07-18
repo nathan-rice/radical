@@ -1,4 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
 export interface IEndpointInput {
     converter?: Function;
 }
@@ -24,8 +23,8 @@ export interface IEndpointArgumentContainer {
 }
 export declare class RequestArgument {
     argument: string;
-    value: string | number;
-    constructor(argument: string, value: string | number);
+    value: any;
+    constructor(argument: string, value: any);
 }
 export interface IEndpoint {
     url?: string;

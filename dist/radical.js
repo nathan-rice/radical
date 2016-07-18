@@ -32,6 +32,7 @@ var RequestArgument = (function () {
     function RequestArgument(argument, value) {
         this.argument = argument;
         this.value = value;
+        this.value = value.toString();
     }
     return RequestArgument;
 }());

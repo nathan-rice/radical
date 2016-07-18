@@ -9,6 +9,7 @@
     "moduleResolution": "node"
   },
   "files": [
-    "src/radical.ts"
+    "src/radical.ts",
+    "typings/index.d.ts"
   ]
 }

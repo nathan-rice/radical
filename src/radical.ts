@@ -1,4 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
 import {Promise} from 'es6-shim';
 
 /**
@@ -58,7 +57,8 @@ export interface IEndpointArgumentContainer {
  * This class is used to represent HTTP request url arguments.
  */
 export class RequestArgument {
-    constructor(public argument: string, public value: string | number) {
+    constructor(public argument: string, public value) {
+        this.value = value.toString();
     }
 }
 
