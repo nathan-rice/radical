@@ -4,6 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var es6_shim_1 = require('es6-shim');
 var EndpointInput = (function () {
     function EndpointInput(config) {
         this.converter = function (argumentValue) { return argumentValue.toString(); };
@@ -93,30 +94,35 @@ var Endpoint = (function () {
         }
     };
     Endpoint.prototype.execute = function (parameters) {
+        var _this = this;
         var request = new XMLHttpRequest(), url = this.url, data = "", endpoint = this;
-        if (parameters) {
-            if (parameters.arguments) {
-                url = this.url + "?" + this.toQueryString(parameters.arguments);
-            }
-            request.onload = function () {
-                if (this.status >= 200 && this.status < 400) {
-                    if (parameters.success)
-                        parameters.success(endpoint.responseParser(this.response), this.status);
+        return new es6_shim_1.Promise(function (resolve, reject) {
+            if (parameters) {
+                if (parameters.arguments) {
+                    url = _this.url + "?" + _this.toQueryString(parameters.arguments);
                 }
-                else {
-                    if (parameters.error)
-                        parameters.error(endpoint.errorParser(this.response), this.status);
+                request.onload = function () {
+                    if (this.status >= 200 && this.status < 400) {
+                        if (parameters.success)
+                            parameters.success(endpoint.responseParser(this.response), this.status);
+                        resolve(this.response);
+                    }
+                    else {
+                        if (parameters.error)
+                            parameters.error(endpoint.errorParser(this.response), this.status);
+                        reject(this.response);
+                    }
+                };
+                if (parameters.data) {
+                    data = _this.body.converter(parameters.data);
                 }
-            };
-            if (parameters.data) {
-                data = this.body.converter(parameters.data);
             }
-        }
-        request.open(this.method, url, true);
-        this.setHeaders(request, this.headers);
-        this.setHeaders(request, parameters.headers);
-        request.setRequestHeader("Content-Type", this.body.contentType);
-        request.send(data);
+            request.open(_this.method, url, true);
+            _this.setHeaders(request, _this.headers);
+            _this.setHeaders(request, parameters.headers);
+            request.setRequestHeader("Content-Type", _this.body.contentType);
+            request.send(data);
+        });
     };
     Endpoint.create = function (config) {
         return new this().configure(config);

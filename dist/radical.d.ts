@@ -1,6 +1,4 @@
-export interface IReduxAction {
-    type: string;
-}
+/// <reference path="../typings/index.d.ts" />
 export interface IEndpointInput {
     converter?: Function;
 }
@@ -26,8 +24,8 @@ export interface IEndpointArgumentContainer {
 }
 export declare class RequestArgument {
     argument: string;
-    value: string;
-    constructor(argument: string, value: string);
+    value: string | number;
+    constructor(argument: string, value: string | number);
 }
 export interface IEndpoint {
     url?: string;
@@ -56,7 +54,7 @@ export declare class Endpoint implements IEndpoint {
     private convert(argument, value);
     private toQueryString;
     private setHeaders(request, headers?);
-    execute(parameters?: IEndpointExecutionParameters): void;
+    execute(parameters?: IEndpointExecutionParameters): Promise<{}>;
     static create(config?: IEndpoint): Endpoint;
 }
 export declare class JsonEndpoint extends Endpoint {
@@ -74,7 +72,7 @@ export interface IApiComponent {
 export interface IAction extends IApiComponent {
     endpoint?: Endpoint | string;
     initiator?: Function;
-    reducer?: ((state, action: IReduxAction) => Object) | ((state, action: IReduxAction) => Object)[];
+    reducer?: ((state, action) => Object) | ((state, action) => Object)[];
 }
 export declare class ApiComponent {
     name: string;
@@ -90,7 +88,7 @@ export declare class ApiComponent {
 export declare class Action extends ApiComponent implements IAction, Function {
     endpoint: Endpoint;
     initiator: Function;
-    reducer: ((state, action: IReduxAction) => Object) | ((state, action: IReduxAction) => Object)[];
+    reducer: ((state, action) => Object) | ((state, action) => Object)[];
     apply: (thisArg: any, argArray?: any) => any;
     call: (thisArg: any, ...argArray: any[]) => any;
     bind: (thisArg: any, ...argArray: any[]) => any;
@@ -136,7 +134,7 @@ export interface ICollection<K, V> {
 }
 export declare class CollectionAction extends Action {
     defaultState: ICollection<any, any>;
-    reducer: (state: ICollection<any, any>, action: IReduxAction) => ICollection<any, any> | ((state: ICollection<any, any>, action: IReduxAction) => ICollection<any, any>)[];
+    reducer: (state: ICollection<any, any>, action) => ICollection<any, any> | ((state: ICollection<any, any>, action) => ICollection<any, any>)[];
     protected getSubState(state: any, location: any): any;
 }
 export declare class CollectionNamespace extends Namespace {

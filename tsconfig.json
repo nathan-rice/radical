@@ -5,7 +5,8 @@
     "outDir": "dist",
     "sourceMap": true,
     "removeComments": true,
-    "jsx": "react"
+    "jsx": "react",
+    "moduleResolution": "node"
   },
   "files": [
     "src/radical.ts"

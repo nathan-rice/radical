@@ -1,3 +1,6 @@
+/// <reference path="../typings/index.d.ts" />
+import {Promise} from 'es6-shim';
+
 /**
  * This is the base for all inputs to a HTTP endpoint.  This includes both URL arguments, and body data for
  * POST/PUT requests.
@@ -211,10 +214,10 @@ export class Endpoint implements IEndpoint {
                 request.onload = function () {
                     if (this.status >= 200 && this.status < 400) {
                         if (parameters.success) parameters.success(endpoint.responseParser(this.response), this.status);
-                        resolve(this.response, this.status);
+                        resolve(this.response);
                     } else {
                         if (parameters.error) parameters.error(endpoint.errorParser(this.response), this.status);
-                        reject(this.response, this.status);
+                        reject(this.response);
                     }
                 };
                 if (parameters.data) {

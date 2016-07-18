@@ -1,6 +1,6 @@
 {
   "name": "radical",
-  "version": "0.1.5",
+  "version": "0.1.14",
   "description": "A boilerplate-free, composable API framework for React/Redux",
   "main": "dist/radical.js",
   "typings": "dist/radical.d.ts",
@@ -35,6 +35,6 @@
     "karma-jasmine": "^0.3.8",
     "redux": "^3.3.1",
     "typedoc": "^0.3.12",
-    "typescript": "^1.8.9",
+    "typescript": "^1.8.10"
   }
 }
